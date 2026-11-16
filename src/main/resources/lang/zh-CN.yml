@@ -1129,6 +1129,35 @@ messages:
       lore_output: "<passive>产物"
       lore_inputs: "<passive>材料（每轮消耗）"
       lore_entry: "<aqua>{0}<passive> × <aqua>{1}"
+  encoder-book:
+    title: "&8配方书"
+    preview-title: "&8配方预览"
+    info-name: "&b配方书"
+    info-lore:
+      - "&7类型: &f%s"
+      - "&7配方数: &f%s"
+      - "&7搜索: &f%s"
+    no-filter: "无"
+    search-name: "&e搜索"
+    search-lore:
+      - "&e左键 &7按物品名称搜索"
+      - "&e右键 &7清除搜索"
+    search-prompt: "&e请在聊天栏输入物品名称进行搜索"
+    empty: "&c没有找到配方"
+    recipe-lore:
+      - ""
+      - "&e左键 &7预览配方"
+      - "&e右键 &7复制到编码器"
+    copy-name: "&a复制到编码器"
+    copy-lore:
+      - "&7从网络中取出材料"
+      - "&7并放入配方槽"
+    copied: "&a配方已复制到编码器"
+    partial: "&e配方已复制，但网络中缺少以下材料:"
+    missing-entry: "&7- &f%s &7x%s"
+    not-connected: "&c编码器未连接到网络"
+    slots-not-empty: "&c配方槽中的物品无法放回网络"
+    encoder-gone: "&c编码器已不存在"
   match-option:
     title: "物品匹配选项"
     click_tip: "点击切换该忽略项"
@@ -1318,6 +1347,14 @@ icons:
       - "<passive>手持物品<click_info>点击<passive>此处添加"
   keybind-settings:
     name: "&6按键控制设置"
+  encoder-recipe-book:
+    name: "&b配方书"
+    lore:
+      - "&7浏览此编码器的配方"
+      - "&7并使用网络中的物品"
+      - "&7将其复制到配方槽"
+      - ""
+      - "&e点击 &7打开"
   match-option-settings:
     name: "&6物品匹配选项"
     lore:

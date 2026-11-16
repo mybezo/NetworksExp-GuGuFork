@@ -1129,6 +1129,35 @@ messages:
       lore_output: "<passive>Output"
       lore_inputs: "<passive>Materials (consumed per round)"
       lore_entry: "<aqua>{0}<passive> × <aqua>{1}"
+  encoder-book:
+    title: "&8Recipe Book"
+    preview-title: "&8Recipe Preview"
+    info-name: "&bRecipe Book"
+    info-lore:
+      - "&7Type: &f%s"
+      - "&7Recipes: &f%s"
+      - "&7Search: &f%s"
+    no-filter: "None"
+    search-name: "&eSearch"
+    search-lore:
+      - "&eLeft Click &7to search by item name"
+      - "&eRight Click &7to clear the search"
+    search-prompt: "&eType an item name in chat to search"
+    empty: "&cNo recipes found"
+    recipe-lore:
+      - ""
+      - "&eLeft Click &7to preview the recipe"
+      - "&eRight Click &7to copy it into the encoder"
+    copy-name: "&aCopy to Encoder"
+    copy-lore:
+      - "&7Takes the ingredients from the network"
+      - "&7and places them in the recipe slots"
+    copied: "&aRecipe copied into the encoder"
+    partial: "&eRecipe copied, but these ingredients are missing in the network:"
+    missing-entry: "&7- &f%s &7x%s"
+    not-connected: "&cThe encoder is not connected to a network"
+    slots-not-empty: "&cThe items in the recipe slots could not be returned to the network"
+    encoder-gone: "&cThe encoder no longer exists"
   match-option:
     title: "Item Match Options"
     click_tip: "Click to toggle this ignore option"
@@ -1318,6 +1347,14 @@ icons:
       - "<passive>Hold an item and <click_info>click<passive> here to add it"
   keybind-settings:
     name: "&6Keybind Settings"
+  encoder-recipe-book:
+    name: "&bRecipe Book"
+    lore:
+      - "&7Browse the recipes of this encoder"
+      - "&7and copy one into the recipe slots"
+      - "&7using items from the network"
+      - ""
+      - "&eClick &7to open"
   match-option-settings:
     name: "&6Item Match Options"
     lore:
