@@ -1148,10 +1148,12 @@ messages:
       - ""
       - "&eLeft Click &7to preview the recipe"
       - "&eRight Click &7to copy it into the encoder"
+      - "&eShift + Right Click &7to copy with a full stack per slot"
     copy-name: "&aCopy to Encoder"
     copy-lore:
       - "&7Takes the ingredients from the network"
       - "&7and places them in the recipe slots"
+      - "&eShift + Click &7for a full stack per slot"
     copied: "&aRecipe copied into the encoder"
     partial: "&eRecipe copied, but these ingredients are missing in the network:"
     missing-entry: "&7- &f%s &7x%s"

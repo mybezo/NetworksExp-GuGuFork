@@ -141,7 +141,7 @@ public final class EncoderRecipeBook {
             menu.addItem(slot, withLore(recipe.getValue(), Lang.getStringList("messages.encoder-book.recipe-lore")),
                 (p, s, item, action) -> {
                     if (action.isRightClicked()) {
-                        copyToEncoder(p, encoderMenu, recipe.getKey());
+                        copyToEncoder(p, encoderMenu, recipe.getKey(), action.isShiftClicked());
                     } else {
                         openPreview(p, encoderMenu, encoder, recipe, filter, current);
                     }
@@ -196,7 +196,7 @@ public final class EncoderRecipeBook {
             Material.LIME_STAINED_GLASS_PANE,
             Lang.getString("messages.encoder-book.copy-name"),
             Lang.getStringList("messages.encoder-book.copy-lore")), (p, s, item, action) -> {
-            copyToEncoder(p, encoderMenu, inputs);
+            copyToEncoder(p, encoderMenu, inputs, action.isShiftClicked());
             return false;
         });
 
@@ -205,9 +205,11 @@ public final class EncoderRecipeBook {
 
     /**
      * Copies a recipe into the encoder's recipe slots, taking the ingredients from its network.
+     *
+     * @param fullStack fill every used slot with a full stack instead of the recipe amount
      */
     private static void copyToEncoder(
-        @NotNull Player player, @NotNull BlockMenu encoderMenu, ItemStack @NotNull [] inputs) {
+        @NotNull Player player, @NotNull BlockMenu encoderMenu, ItemStack @NotNull [] inputs, boolean fullStack) {
         final Location location = encoderMenu.getLocation();
         if (StorageCacheUtils.getMenu(location) != encoderMenu) {
             player.closeInventory();
@@ -249,13 +251,14 @@ public final class EncoderRecipeBook {
             if (input == null || input.getType() == Material.AIR) {
                 continue;
             }
-            ItemStack taken = root.getItemStack0(location, new ItemRequest(input.clone(), input.getAmount()));
+            int wanted = fullStack ? input.getMaxStackSize() : input.getAmount();
+            ItemStack taken = root.getItemStack0(location, new ItemRequest(input.clone(), wanted));
             int got = taken == null ? 0 : taken.getAmount();
             if (got > 0) {
                 encoderMenu.replaceExistingItem(BlueprintEncoder.RECIPE_SLOTS[i], taken);
             }
-            if (got < input.getAmount()) {
-                missing.merge(ItemStackHelper.getDisplayName(input), input.getAmount() - got, Integer::sum);
+            if (got < wanted) {
+                missing.merge(ItemStackHelper.getDisplayName(input), wanted - got, Integer::sum);
             }
         }
 
