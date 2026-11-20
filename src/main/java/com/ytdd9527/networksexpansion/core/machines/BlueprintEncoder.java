@@ -41,13 +41,14 @@ import java.util.Set;
 
 public class BlueprintEncoder extends NetworkObject implements CraftTyped {
     private static final int[] BACKGROUND = new int[]{
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 20, 24, 25, 27, 28, 29, 33, 36, 37, 38, 39, 40, 41,
+        0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 15, 17, 18, 20, 24, 25, 27, 28, 29, 33, 36, 37, 38, 39, 40, 41,
         42, 43, 44
     };
-    private static final int[] RECIPE_SLOTS = new int[]{12, 13, 14, 21, 22, 23, 30, 31, 32};
+    static final int[] RECIPE_SLOTS = new int[]{12, 13, 14, 21, 22, 23, 30, 31, 32};
     private static final int[] BLUEPRINT_BACK = new int[]{10, 28};
     private static final int BLANK_BLUEPRINT_SLOT = 19;
     private static final int ENCODE_SLOT = 16;
+    private static final int RECIPE_BOOK_SLOT = 4;
     private static final int OUTPUT_SLOT = 34;
     private static final int ITEM_TARGET_DESC_SLOT = 26;
     private static final int ITEM_TARGET_SLOT = 35;
@@ -90,11 +91,18 @@ public class BlueprintEncoder extends NetworkObject implements CraftTyped {
                 drawBackground(Icon.BLUEPRINT_BACK_STACK, BLUEPRINT_BACK);
 
                 addItem(ENCODE_SLOT, Icon.ENCODE_STACK, (player, i, itemStack, clickAction) -> false);
+                addItem(RECIPE_BOOK_SLOT, recipeBookIcon(), (player, i, itemStack, clickAction) -> false);
                 addItem(ITEM_TARGET_DESC_SLOT, Icon.ITEM_TARGET_DESC_STACK, (player, i, itemStack, clickAction) -> false);
             }
 
             @Override
             public void newInstance(@NotNull BlockMenu menu, @NotNull Block b) {
+                // Placed encoders may still hold the old background pane in this slot
+                menu.replaceExistingItem(RECIPE_BOOK_SLOT, recipeBookIcon());
+                menu.addMenuClickHandler(RECIPE_BOOK_SLOT, (player, s, itemStack, clickAction) -> {
+                    EncoderRecipeBook.open(player, menu, BlueprintEncoder.this, null, 1);
+                    return false;
+                });
                 menu.addMenuClickHandler(ENCODE_SLOT, (player, s, itemStack, clickAction) -> {
                     int times = clickAction.isShiftClicked() ? 64 : 1;
                     for (int i = 0; i < times; i++) {
@@ -144,6 +152,10 @@ public class BlueprintEncoder extends NetworkObject implements CraftTyped {
                 return slots.stream().mapToInt(Integer::intValue).toArray();
             }
         };
+    }
+
+    private static @NotNull ItemStack recipeBookIcon() {
+        return Lang.getIcon("encoder-recipe-book", Material.KNOWLEDGE_BOOK);
     }
 
     public boolean tryEncode(@NotNull Player player, @NotNull BlockMenu blockMenu) {

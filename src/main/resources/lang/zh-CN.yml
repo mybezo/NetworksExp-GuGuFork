@@ -161,6 +161,16 @@ messages:
       empty: "<warning>该元件为空"
       converted: "<success>已将元件内容转换为对应等级的量子存储"
       none-converted: "<warning>元件中没有可转换的物品"
+    tick:
+      invalid-id: "<error>未知的网络物品 ID: %s"
+      no-ticker: "<error>%s 没有 tick，无法修改其 tick 速率"
+      invalid-ticks: "<error>tick 必须是 %s 到 %s 之间的整数，或 reset"
+      current: "&a%s &7(%s) &a每 &e%s &a个粘液 tick 工作一次"
+      set: "&a已设置 %s &7(%s) &a每 &e%s &a个粘液 tick 工作一次"
+      reset: "&a已将 %s &7(%s) &a恢复为正常速度"
+      list-header: "&6自定义 tick 间隔:"
+      list-entry: "&7- &f%s&7: 每 &e%s &7个粘液 tick"
+      list-empty: "&7没有设置自定义 tick 间隔"
     help:
       - "&6网络命令帮助:"
       - "&6/networks help - 显示此帮助信息."
@@ -174,7 +184,12 @@ messages:
       - "&6/networks updateitem - 更新手持物品."
       - "&6/networks getstorageitem <slot> - 获取看向的网络抽屉指定槽位的物品."
       - "&6/networks viewlog - 将指向的 AdminDebuggable 的日志输出."
+      - "&6/networks tick <id> [ticks|reset] - 让网络机器每 N 个粘液 tick 工作一次。"
     example:
+      tick:
+        - "&6/networks tick <id> [ticks|reset] - 让网络机器每 N 个粘液 tick 工作一次（1 = 正常）。"
+        - "&6/networks tick <id> - 查看当前设置。/networks tick list - 查看所有自定义设置。"
+        - "&6ex: /networks tick NTW_EXPANSION_LINE_TRANSFER_PUSHER 4"
       help:
         - "&6/networks help - 显示此帮助信息."
         - "&6ex: /networks help"
@@ -1114,6 +1129,37 @@ messages:
       lore_output: "<passive>产物"
       lore_inputs: "<passive>材料（每轮消耗）"
       lore_entry: "<aqua>{0}<passive> × <aqua>{1}"
+  encoder-book:
+    title: "&8配方书"
+    preview-title: "&8配方预览"
+    info-name: "&b配方书"
+    info-lore:
+      - "&7类型: &f%s"
+      - "&7配方数: &f%s"
+      - "&7搜索: &f%s"
+    no-filter: "无"
+    search-name: "&e搜索"
+    search-lore:
+      - "&e左键 &7按物品名称搜索"
+      - "&e右键 &7清除搜索"
+    search-prompt: "&e请在聊天栏输入物品名称进行搜索"
+    empty: "&c没有找到配方"
+    recipe-lore:
+      - ""
+      - "&e左键 &7预览配方"
+      - "&e右键 &7复制到编码器"
+      - "&eShift + 右键 &7复制并每格放满一组"
+    copy-name: "&a复制到编码器"
+    copy-lore:
+      - "&7从网络中取出材料"
+      - "&7并放入配方槽"
+      - "&eShift + 点击 &7每格放满一组"
+    copied: "&a配方已复制到编码器"
+    partial: "&e配方已复制，但网络中缺少以下材料:"
+    missing-entry: "&7- &f%s &7x%s"
+    not-connected: "&c编码器未连接到网络"
+    slots-not-empty: "&c配方槽中的物品无法放回网络"
+    encoder-gone: "&c编码器已不存在"
   match-option:
     title: "物品匹配选项"
     click_tip: "点击切换该忽略项"
@@ -1303,6 +1349,14 @@ icons:
       - "<passive>手持物品<click_info>点击<passive>此处添加"
   keybind-settings:
     name: "&6按键控制设置"
+  encoder-recipe-book:
+    name: "&b配方书"
+    lore:
+      - "&7浏览此编码器的配方"
+      - "&7并使用网络中的物品"
+      - "&7将其复制到配方槽"
+      - ""
+      - "&e点击 &7打开"
   match-option-settings:
     name: "&6物品匹配选项"
     lore:

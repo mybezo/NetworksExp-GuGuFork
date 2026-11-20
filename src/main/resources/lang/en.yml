@@ -161,6 +161,16 @@ messages:
       empty: "<warning>This cell is empty"
       converted: "<success>Converted the cell contents into a Quantum Storage of the matching tier"
       none-converted: "<warning>There are no convertible items in the cell"
+    tick:
+      invalid-id: "<error>Unknown Networks item ID: %s"
+      no-ticker: "<error>%s does not tick, so its tick rate cannot be changed"
+      invalid-ticks: "<error>Ticks must be a whole number from %s to %s, or reset"
+      current: "&a%s &7(%s) &aworks every &e%s &aSlimefun tick(s)"
+      set: "&aSet %s &7(%s) &ato work every &e%s &aSlimefun tick(s)"
+      reset: "&aReset %s &7(%s) &ato normal speed"
+      list-header: "&6Custom tick intervals:"
+      list-entry: "&7- &f%s&7: every &e%s &7Slimefun tick(s)"
+      list-empty: "&7No custom tick intervals set"
     help:
       - "&6Network Command Help:"
       - "&6/networks help - Show this help message."
@@ -174,7 +184,12 @@ messages:
       - "&6/networks updateItem - Update the held item."
       - "&6/networks getstorageitem <slot> - Get item from specific slot of the looked-at Network Drawer."
       - "&6/networks viewLog - Output logs of the pointed AdminDebuggable."
+      - "&6/networks tick <id> [ticks|reset] - Make a Networks machine work every N Slimefun ticks."
     example:
+      tick:
+        - "&6/networks tick <id> [ticks|reset] - Make a Networks machine work every N Slimefun ticks (1 = normal)."
+        - "&6/networks tick <id> - Show the current setting. /networks tick list - Show all custom settings."
+        - "&6ex: /networks tick NTW_EXPANSION_LINE_TRANSFER_PUSHER 4"
       help:
         - "&6/networks help - Show this help message."
         - "&6ex: /networks help"
@@ -1114,6 +1129,37 @@ messages:
       lore_output: "<passive>Output"
       lore_inputs: "<passive>Materials (consumed per round)"
       lore_entry: "<aqua>{0}<passive> × <aqua>{1}"
+  encoder-book:
+    title: "&8Recipe Book"
+    preview-title: "&8Recipe Preview"
+    info-name: "&bRecipe Book"
+    info-lore:
+      - "&7Type: &f%s"
+      - "&7Recipes: &f%s"
+      - "&7Search: &f%s"
+    no-filter: "None"
+    search-name: "&eSearch"
+    search-lore:
+      - "&eLeft Click &7to search by item name"
+      - "&eRight Click &7to clear the search"
+    search-prompt: "&eType an item name in chat to search"
+    empty: "&cNo recipes found"
+    recipe-lore:
+      - ""
+      - "&eLeft Click &7to preview the recipe"
+      - "&eRight Click &7to copy it into the encoder"
+      - "&eShift + Right Click &7to copy with a full stack per slot"
+    copy-name: "&aCopy to Encoder"
+    copy-lore:
+      - "&7Takes the ingredients from the network"
+      - "&7and places them in the recipe slots"
+      - "&eShift + Click &7for a full stack per slot"
+    copied: "&aRecipe copied into the encoder"
+    partial: "&eRecipe copied, but these ingredients are missing in the network:"
+    missing-entry: "&7- &f%s &7x%s"
+    not-connected: "&cThe encoder is not connected to a network"
+    slots-not-empty: "&cThe items in the recipe slots could not be returned to the network"
+    encoder-gone: "&cThe encoder no longer exists"
   match-option:
     title: "Item Match Options"
     click_tip: "Click to toggle this ignore option"
@@ -1303,6 +1349,14 @@ icons:
       - "<passive>Hold an item and <click_info>click<passive> here to add it"
   keybind-settings:
     name: "&6Keybind Settings"
+  encoder-recipe-book:
+    name: "&bRecipe Book"
+    lore:
+      - "&7Browse the recipes of this encoder"
+      - "&7and copy one into the recipe slots"
+      - "&7using items from the network"
+      - ""
+      - "&eClick &7to open"
   match-option-settings:
     name: "&6Item Match Options"
     lore:
