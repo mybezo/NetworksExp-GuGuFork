@@ -42,11 +42,14 @@ public final class TickIntervalManager {
 
     /**
      * Sets the interval of an item and saves it; an interval of 1 resets the item to normal speed.
+     * <p>
+     * A reset is stored as {@code 1} instead of removing the entry, so the defaults in the bundled
+     * config.yml are not merged back in on the next startup.
      */
     public static void setInterval(@NotNull String id, int interval) {
         if (interval <= MIN_INTERVAL) {
             INTERVALS.remove(id);
-            Networks.getConfigManager().setTickInterval(id, null);
+            Networks.getConfigManager().setTickInterval(id, MIN_INTERVAL);
         } else {
             INTERVALS.put(id, interval);
             Networks.getConfigManager().setTickInterval(id, interval);
