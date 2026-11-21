@@ -114,7 +114,9 @@ public class SuperTrash extends NetworkObject implements RecipeDisplayItem {
         public SuperTrashBlockMenu(final Location l) {
             super(ExpansionItems.SUPER_TRASH.PRESET, l);
             addPlayerInventoryClickHandler((p, s, i, a) -> {
-                i.setAmount(0);
+                if (i != null) {
+                    i.setAmount(0);
+                }
                 return false;
             });
             this.inventory = Bukkit.createInventory(this, 9);

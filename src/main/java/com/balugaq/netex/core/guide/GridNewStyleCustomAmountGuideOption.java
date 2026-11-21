@@ -83,11 +83,15 @@ public class GridNewStyleCustomAmountGuideOption implements SlimefunGuideOption<
                 }
 
                 setSelectedOption(p, guide, value);
-                try {
-                    JEGGuideSettings.openSettings(p, guide);
-                } catch (Exception ignored) {
-                    SlimefunGuideSettings.openSettings(p, guide);
+                if (Networks.getSupportedPluginManager().isJustEnoughGuide()) {
+                    try {
+                        JEGGuideSettings.openSettings(p, guide);
+                        return;
+                    } catch (Exception | LinkageError ignored) {
+                        // older JustEnoughGuide without JEGGuideSettings, fall back below
+                    }
                 }
+                SlimefunGuideSettings.openSettings(p, guide);
             } catch (NumberFormatException e) {
                 p.sendMessage(String.format(
                         Lang.getString("messages.guide.invalid-amount-input"), GRID_NEW_STYLE_MAX_CUSTOM_AMOUNT)
