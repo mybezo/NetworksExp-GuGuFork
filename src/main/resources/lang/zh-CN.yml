@@ -278,8 +278,8 @@ messages:
       location: "<click_info>%s:%s:%s"
       advance: "<passive>高级合成机: %s"
       crafter_type: "<passive>合成机类型: %s"
-      yes: "&a√"
-      no: "&cx"
+      "yes": "&a√"
+      "no": "&cx"
       quantum-manager-click-behavior:
         - "<click_info>左键点击: <passive>打开存储"
         - "<click_info>手持物品左键点击: <passive>将点击的存储所存储的物品设置为手持物品"

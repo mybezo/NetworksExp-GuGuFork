@@ -278,8 +278,8 @@ messages:
       location: "<click_info>%s:%s:%s"
       advance: "<passive>Advanced Crafter: %s"
       crafter_type: "<passive>Crafting Machine Type: %s"
-      yes: "&a√"
-      no: "&cx"
+      "yes": "&a√"
+      "no": "&cx"
       quantum-manager-click-behavior:
         - "<click_info>Left Click: <passive>Open Storage"
         - "<click_info>Left Click with Item: <passive>Set the stored item of the clicked storage to the held item"
