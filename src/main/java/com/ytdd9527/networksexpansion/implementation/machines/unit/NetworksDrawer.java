@@ -408,6 +408,58 @@ public class NetworksDrawer extends SpecialSlimefunItem implements DistinctiveIt
         addClickHandler(l);
     }
 
+    /**
+     * Returns where the container is still placed as a working drawer, other than {@code l},
+     * or null when it is free to be restored at {@code l}.
+     */
+    public static @Nullable Location findOtherPlacement(@NotNull Location l, @NotNull StorageUnitData data) {
+        final int id = data.getId();
+        for (Map.Entry<Location, StorageUnitData> entry : storages.entrySet()) {
+            if (entry.getValue().getId() == id
+                && !entry.getKey().equals(l)
+                && StorageCacheUtils.getSfItem(entry.getKey()) instanceof NetworksDrawer
+                && getContainerId(entry.getKey()) == id) {
+                return entry.getKey();
+            }
+        }
+        final Location last = data.getLastLocation();
+        if (data.isPlaced()
+            && last != null
+            && !last.equals(l)
+            && StorageCacheUtils.getSfItem(last) instanceof NetworksDrawer
+            && getContainerId(last) == id) {
+            return last;
+        }
+        return null;
+    }
+
+    /**
+     * Binds the drawer at {@code l} to an existing container and saves the binding,
+     * so it survives restarts. Returns the container ID the drawer had before, or -1.
+     */
+    public static int restoreContainer(@NotNull Location l, @NotNull StorageUnitData data) {
+        final int id = data.getId();
+        final StorageUnitData old = storages.remove(l);
+        final int oldId = old != null ? old.getId() : getContainerId(l);
+        if (oldId != -1 && oldId != id) {
+            if (old != null) {
+                old.setPlaced(false);
+            } else {
+                DataStorage.setContainerStatus(oldId, false);
+            }
+        }
+        storages.entrySet().removeIf(entry -> entry.getValue().getId() == id);
+
+        data.setPlaced(true);
+        data.setLastLocation(l);
+        storages.put(l, data);
+        StorageCacheUtils.setData(l, "containerId", String.valueOf(id));
+        DrawerVirtualCache.removeDrawer(l);
+        addClickHandler(l);
+        update(l, true);
+        return oldId == id ? -1 : oldId;
+    }
+
     private static void addClickHandler(@NotNull Location l) {
         final BlockMenu blockMenu = StorageCacheUtils.getMenu(l);
         if (blockMenu == null) {

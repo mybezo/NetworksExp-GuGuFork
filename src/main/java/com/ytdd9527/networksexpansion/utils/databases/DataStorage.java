@@ -4,6 +4,7 @@ import com.balugaq.netex.api.data.StorageUnitData;
 import com.balugaq.netex.api.enums.StorageUnitType;
 import com.balugaq.netex.utils.Lang;
 import io.github.sefiraat.networks.Networks;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
@@ -47,6 +48,23 @@ public class DataStorage {
                     loadContainer(id);
                 }
                 usage.accept(getCachedStorageData(id));
+            }
+        }.runTaskAsynchronously(Networks.getInstance());
+    }
+
+    /**
+     * Loads the container data of the given ID (from cache or database) off the main thread
+     * and hands the result to {@code usage} on the main thread.
+     */
+    public static void loadStorageData(int id, @NotNull Consumer<Optional<StorageUnitData>> usage) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (getCachedStorageData(id).isEmpty()) {
+                    loadContainer(id);
+                }
+                Optional<StorageUnitData> data = getCachedStorageData(id);
+                Bukkit.getScheduler().runTask(Networks.getInstance(), () -> usage.accept(data));
             }
         }.runTaskAsynchronously(Networks.getInstance());
     }

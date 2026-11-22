@@ -14,6 +14,7 @@ import com.ytdd9527.networksexpansion.core.managers.TickIntervalManager;
 import com.ytdd9527.networksexpansion.core.services.CollectService;
 import com.ytdd9527.networksexpansion.implementation.machines.converter.CellQuantumConverter;
 import com.ytdd9527.networksexpansion.implementation.machines.unit.NetworksDrawer;
+import com.ytdd9527.networksexpansion.utils.databases.DataStorage;
 import io.github.sefiraat.networks.Networks;
 import io.github.sefiraat.networks.network.NetworkRoot;
 import io.github.sefiraat.networks.network.stackcaches.BlueprintInstance;
@@ -250,11 +251,37 @@ public class NetworksMain implements TabExecutor {
         }
 
         final Location location = targetBlock.getLocation();
+        if (containerId < 0) {
+            player.sendMessage(String.format(Lang.getString("messages.commands.container-not-found"), containerId));
+            return;
+        }
 
         player.sendMessage(Lang.getString("messages.commands.wait-for-data"));
-        NetworksDrawer.requestData(location, containerId);
-        player.sendMessage(String.format(
-            Lang.getString("messages.commands.set-container-id"), locationToString(location), containerId));
+        DataStorage.loadStorageData(containerId, optional -> {
+            if (optional.isEmpty()) {
+                player.sendMessage(String.format(Lang.getString("messages.commands.container-not-found"), containerId));
+                return;
+            }
+            if (!(StorageCacheUtils.getSfItem(location) instanceof NetworksDrawer)) {
+                player.sendMessage(Lang.getString("messages.commands.must-look-at-drawer"));
+                return;
+            }
+
+            final StorageUnitData data = optional.get();
+            final Location other = NetworksDrawer.findOtherPlacement(location, data);
+            if (other != null) {
+                player.sendMessage(String.format(
+                    Lang.getString("messages.commands.container-in-use"), containerId, locationToString(other)));
+                return;
+            }
+
+            final int previousId = NetworksDrawer.restoreContainer(location, data);
+            player.sendMessage(String.format(
+                Lang.getString("messages.commands.set-container-id"), locationToString(location), containerId));
+            if (previousId != -1) {
+                player.sendMessage(String.format(Lang.getString("messages.commands.container-replaced"), previousId));
+            }
+        });
     }
 
     private static void updateItem(@NotNull Player player) {
