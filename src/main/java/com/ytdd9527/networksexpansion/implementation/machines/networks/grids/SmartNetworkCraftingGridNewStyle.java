@@ -252,7 +252,7 @@ public class SmartNetworkCraftingGridNewStyle extends AbstractGridNewStyle {
 
     @SuppressWarnings("deprecation")
     private synchronized void tryCraft(BlockMenu menu, Player player, ClickAction action) {
-        if (player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5).size() < THRESHOLD) {
+        if (player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5).size() >= THRESHOLD) {
             sendFeedback(menu.getLocation(), FeedbackType.TOO_MANY_ENTITIES);
             return;
         }
